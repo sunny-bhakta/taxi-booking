@@ -19,6 +19,13 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type LocationPoint {
+  address: String!
+  latitude: Float
+  longitude: Float
+  note: String
+}
+
 input LoginInput {
   email: String!
   password: String!
@@ -36,7 +43,42 @@ type Query {
   users: [User!]!
 }
 
+type RideBooking {
+  cancellationPenalty: Float
+  cancellationReason: String
+  cancellationWindowMinutes: Int
+  cancelledAt: DateTime
+  createdAt: DateTime!
+  destinationLocation: LocationPoint!
+  estimatedArrival: DateTime!
+  estimatedDistanceKm: Float!
+  estimatedDurationMinutes: Float!
+  estimatedFare: Float!
+  id: ID!
+  isInstant: Boolean!
+  note: String
+  passenger: User!
+  pickupLocation: LocationPoint!
+  scheduledAt: DateTime
+  status: RideStatus!
+  stops: [LocationPoint!]
+  updatedAt: DateTime!
+  vehicleType: VehicleType!
+}
+
+"""Lifecycle states for a ride booking"""
+enum RideStatus {
+  CANCELLED
+  COMPLETED
+  DRIVER_ASSIGNED
+  EN_ROUTE_TO_PICKUP
+  IN_PROGRESS
+  PENDING_DRIVER
+  SCHEDULED
+}
+
 type User {
+  bookings: [RideBooking!]
   createdAt: DateTime!
   deletedAt: DateTime
   email: String!
@@ -46,4 +88,12 @@ type User {
   isConfirmed: Boolean!
   lastName: String!
   updatedAt: DateTime!
+}
+
+"""Supported vehicle categories for taxi bookings"""
+enum VehicleType {
+  ECONOMY
+  EXECUTIVE
+  PREMIUM
+  SUV
 }

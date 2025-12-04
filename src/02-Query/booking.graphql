@@ -1,0 +1,92 @@
+# Create ride booking (instant ride)
+mutation CreateRide {
+  createRideBooking(
+    input: {
+      pickup: {
+        address: "1 Hacker Way, Menlo Park"
+        latitude: 37.484722
+        longitude: -122.148333
+      }
+      destination: {
+        address: "San Jose Diridon Station"
+        latitude: 37.329732
+        longitude: -121.903926
+      }
+      stops: [
+        {
+          address: "Refuel stop"
+          latitude: 37.406681
+          longitude: -122.076522
+          note: "Grab coffee"
+        }
+      ]
+      vehicleType: SUV
+      note: "Group ride with luggage"
+    }
+  ) {
+    id
+    status
+    estimatedFare
+    estimatedArrival
+  }
+}
+
+# Scheduled ride (set future datetime)
+mutation ScheduleRide {
+  createRideBooking(
+    input: {
+      pickup: {
+        address: "JFK Terminal 4"
+        latitude: 40.6413
+        longitude: -73.7781
+      }
+      destination: {
+        address: "11 Wall St, New York, NY"
+        latitude: 40.7075
+        longitude: -74.0113
+      }
+      vehicleType: EXECUTIVE
+      scheduledAt: "2025-12-05T14:30:00.000Z"
+    }
+  ) {
+    id
+    scheduledAt
+    isInstant
+    estimatedFare
+  }
+}
+
+# List rides with optional status filter
+query UpcomingRides {
+  myRides(status: SCHEDULED) {
+    id
+    status
+    pickupLocation {
+      address
+    }
+    scheduledAt
+    estimatedArrival
+    vehicleType
+  }
+}
+
+# Cancel ride (penalty depends on cancellation window)
+mutation CancelRide {
+  cancelRide(
+    input: {
+      rideId: "ride-id-here"
+      reason: "Travel plan updated"
+    }
+  ) {
+    id
+    status
+    cancellationPenalty
+    cancellationReason
+  }
+}
+
+# Authorization header
+{
+  "Authorization": "Bearer <token>"
+}
+

@@ -1,5 +1,14 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  DeleteDateColumn,
+  OneToMany,
+} from 'typeorm';
+import { RideBooking } from '../../booking/entities/ride-booking.entity';
 
 @ObjectType()
 @Entity('users')
@@ -42,5 +51,9 @@ export class User {
   @Field({ nullable: true })
   @DeleteDateColumn()
   deletedAt?: Date;
+
+  @Field(() => [RideBooking], { nullable: true })
+  @OneToMany(() => RideBooking, (ride) => ride.passenger)
+  bookings?: RideBooking[];
 }
 
