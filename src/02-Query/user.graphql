@@ -1,0 +1,59 @@
+# Signin flow locally
+mutation {
+  signin(loginInput: { email: "test@example.com", password: "password123" }) {
+    accessToken
+    user {
+      id
+      email
+    }
+  }
+}
+
+# Login
+mutation {
+  signin(loginInput: { email: "test@example.com", password: "password123" }) {
+    accessToken
+    user {
+      id
+      email
+    }
+  }
+}
+
+# Find users
+query {
+  users {
+    id
+    email
+    firstName
+    email
+  }
+}
+
+# User by id
+query GetUser($id: String!) {
+  user(id: $id) {
+    id
+    email
+    firstName
+    lastName
+  }
+}
+
+# User by contex
+query Me {
+  me {
+    email
+  }
+}
+
+
+# Http Header
+{
+  "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiODM1ZmM3Ny1iMWJiLTQ1MGMtODZmOS03OTMyY2UyYzkxNWQiLCJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJpYXQiOjE3NjQ4MzkxNTEsImV4cCI6MTc2NTQ0Mzk1MX0.PyvOvF1se9ymnOS5eGDmVf97rJeWGHSnURnqYuhdoEs"
+}
+
+# Query Variable
+{
+  "id": "b835fc77-b1bb-450c-86f9-7932ce2c915d"
+}
